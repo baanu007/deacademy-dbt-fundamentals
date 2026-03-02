@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+
+    - name: source
+
+      database: MYDB
+
+      schema: BRONZE
+
+      tables:
+
+        - name: WORK_PRODUCT_COPY
