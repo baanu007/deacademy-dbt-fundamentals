@@ -43,3 +43,14 @@ models:
       gold:
           schema: gold
           materialized: view
+vars:
+
+   wrk_schema: BRONZE
+
+   file_format_json: MY_DB.BRONZE.MY_CSV_FORMAT
+
+   purge_status: FALSE
+
+   stage_name: MY_DB.BRONZE.MY_S3_STAGE
+
+   rawhist_db: MY_DB
