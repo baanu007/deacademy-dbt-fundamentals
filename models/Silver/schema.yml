@@ -4,7 +4,7 @@ sources:
 
     - name: source
 
-      database: MYDB
+      database: MY_DB
 
       schema: BRONZE
 
