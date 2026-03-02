@@ -36,9 +36,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   sai_dbt_workshop:
-      example:
-          +schema: example
-
       silver:
           +schema: silver
           +materialized: table
@@ -46,6 +43,7 @@ models:
       gold:
           +schema: gold
           +materialized: view
+vars:
 
    wrk_schema: BRONZE
 
