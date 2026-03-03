@@ -23,7 +23,7 @@ models:
       +materialized: table
 
     gold:
-      +database: PC_DBT
+      +database: PC_DBT_DB
       +schema: GOLD
       +materialized: view
 
