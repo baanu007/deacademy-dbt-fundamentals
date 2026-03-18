@@ -1,34 +1,34 @@
--- walmart_date_dim.sql
--- This model creates a clean dimension table for dates
--- Source: FACT_RAW (contains all the dates and holiday flags)
-
 {{
     config(
-        materialized='table',
-        unique_key='DATE_ID'
+        materialized='incremental',
+        unique_key='Date_id',
+        incremental_strategy='merge',
+        schema='RAW'
     )
 }}
 
 WITH date_source AS (
-    -- Pull all unique dates from the fact table
     SELECT DISTINCT
-        DATE,
+        DATE        AS Store_Date,
         ISHOLIDAY
     FROM {{ source('raw', 'FACT_RAW') }}
 ),
 
 final AS (
     SELECT
-        -- Generate a unique integer ID for each date
-        ROW_NUMBER() OVER (ORDER BY DATE)   AS DATE_ID,
-        DATE                                AS STORE_DATE,
-        CASE 
+        ROW_NUMBER() OVER (ORDER BY Store_Date)   AS Date_id,
+        Store_Date,
+        CASE
             WHEN ISHOLIDAY = TRUE THEN 'Yes'
             ELSE 'No'
-        END                                 AS ISHOLIDAY,
-        CURRENT_TIMESTAMP                   AS INSERT_DATE,
-        CURRENT_TIMESTAMP                   AS UPDATE_DATE
+        END                                       AS Isholiday,
+        CURRENT_TIMESTAMP                         AS Insert_date,
+        CURRENT_TIMESTAMP                         AS Update_date
     FROM date_source
 )
 
 SELECT * FROM final
+
+{% if is_incremental() %}
+    WHERE Store_Date NOT IN (SELECT Store_Date FROM {{ this }})
+{% endif %}
